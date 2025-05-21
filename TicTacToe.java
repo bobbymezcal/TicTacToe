@@ -6,7 +6,6 @@ public class TicTacToe {
     private String player2;                  // Declare a string to represent player 2
     private boolean player1Turn;             // Declare a boolean to keep track of whose turn it is
     private boolean gameOver;                // Declare a boolean to keep track of whether the game is over
-    private boolean successfulMove;          // Declare a boolean to keep track of whether the previous move was successful  
     private HashMap<String, Integer> winnerMap; // Declare a HashMap to keep track of the scores of the players 
     private TicTacToeBoard currentBoard; // Declare a TicTacToeBoard object to represent the current board
 
