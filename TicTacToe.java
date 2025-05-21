@@ -5,6 +5,7 @@ public class TicTacToe {
     private String player1;                  // Declare a string to represent player 1
     private String player2;                  // Declare a string to represent player 2
     private boolean player1Turn;             // Declare a boolean to keep track of whose turn it is
+    private String startingPlayer;          // Declare a string to represent the starting player
     private boolean gameOver;                // Declare a boolean to keep track of whether the game is over
     private HashMap<String, Integer> winnerMap; // Declare a HashMap to keep track of the scores of the players 
     private TicTacToeBoard currentBoard; // Declare a TicTacToeBoard object to represent the current board
@@ -13,6 +14,7 @@ public class TicTacToe {
     // main method
     public static void main(String[] args) {
         TicTacToe game = new TicTacToe("Bobby", "Pau"); // Create a new TicTacToe object
+        game.startingPlayer = game.player1; // Set the starting player
         game.singleGameLoop();
 
         /* TESTING BASIC GAME MECHANICS
@@ -223,9 +225,12 @@ public class TicTacToe {
             System.out.print(this.currentBoard.toString()); // Print the board
             row = input.getIntResponse(playerPrompt, 1, 3);
             col = input.getIntResponse("And which COL?", 1, 3);
-            this.gameOver = this.currentBoard.makeMove(row, col); // Make the move
+            this.gameOver = this.currentBoard.makeMove(row, col);
+            this.player1Turn = !this.player1Turn; // Make the move
         }
-
+        System.out.println("\nHere is the board:");
+        System.out.print(this.currentBoard.toString()); // Print the board
+        this.startingPlayer = this.startingPlayer == player2 ? this.player1 : this.player2; // Set the new starting player
     }
 
 }
