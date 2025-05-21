@@ -1,58 +1,59 @@
+import java.util.HashMap;
+
 public class TicTacToe {
+    // Instance fields
+    private String player1;                  // Declare a string to represent player 1
+    private String player2;                  // Declare a string to represent player 2
+    private boolean gameOver;                // Declare a boolean to keep track of whether the game is over  
+
+    // Declare a HashMap to keep track of the winners
+    private static HashMap<Character, Integer> winnerMap = new HashMap<>(); 
+    static {
+        winnerMap.put('X', 0);     // Initialize the HashMap with the values for X
+        winnerMap.put('O', 0);     // Initialize the HashMap with the values for O
+        winnerMap.put('T', 0);     // Initialize the HashMap with the values for Tie
+    }
+
+
+
+    // main method
     public static void main(String[] args) {
-        // Instance fields
-        // Declare booleans to keep track of whether the game is over or if there is a tie
-        boolean gameOver = false;
-        boolean isTie = false;
-        // Declare a char to keep track of whose turn it is
-        char currentPlayer = 'X';
+        TicTacToe game = new TicTacToe("Player 1", "Player 2"); // Create a new TicTacToe object
+        TicTacToeBoard board = new TicTacToeBoard(); // Create a new TicTacToeBoard object
 
-        // Declare a 3x3 char array to represent the board
-        char[][] board = new char[3][3];
-        // Initialize the board to be empty
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                board[i][j] = ' ';
-            }
-        }
+        // Print the welcome message
+        System.out.println("Welcome to Tic Tac Toe!");
+        System.out.println("Player X: " + game.player1);
+        System.out.println("Player O: " + game.player2);
+        System.out.println("X goes first!");
+        System.out.println("Here is the board:");
+        System.out.print(board.toString()); // Print the board
+        
+    }
 
-        // Method to check for a winner
-        public char checkForWinner(char[][] board){
-            // Check rows
-            for (int i = 0; i < 3; i++) {
-                if(board[i][0] != ' ' && board[i][0] == board[i][1] && board[i][1] == board[i][2]) {
-                    return board[i][0];
-                }
-            }
-            // Check columns
-            for (int j = 0; j < 3; j++) {
-                if(board[0][j] != ' ' && board[0][j] == board[1][j] && board[1][j] == board[2][j]) {
-                    return board[0][j];
-                }
-            }
-            // Check diagonals
-            if(board[0][0] != ' ' && board[0][0] == board[1][1] && board[1][1] == board[2][2]) {
-                return board[0][0];
-            }
-            if(board[0][2] != ' ' && board[0][2] == board[1][1] && board[1][1] == board[2][0]) {
-                return board[0][2];
-            }
-            // No winner
-            return ' ';
-
-        }
+    // constructor
+    public TicTacToe(String player1, String player2) {
+        this.player1 = player1; // Initialize player 1
+        this.player2 = player2; // Initialize player 2
+        this.gameOver = false;  // Set gameOver to false
+    }
 
 
 
+        /*
         // Game loop
         while (!gameOver) {
+            // Print welcome message
+            // Get player names
             // Print the board
-            // Get the player's move
+            // Get the next player's move
             // Update the board
             // Check if the game is over
-            // Clear the console
-            // Switch players
+                // if the game is over, ask if the players want to play again
+            
+
         }
-    }
+        */
+    
 
 }
