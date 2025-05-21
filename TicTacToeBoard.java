@@ -68,7 +68,7 @@ public class TicTacToeBoard {
             board[row][col] = currentPlayer;   // Update the board
             this.winner = checkForWinner();    // Check for a winner
             currentPlayer = (currentPlayer == 'X') ? 'O' : 'X'; // Switch players
-            return true;                       // Return true if the move was successful
+            return checkForWinner() == ' ' ? false : true;                       // Return true if there is a winner
         } else {
             System.out.println("Cell already occupied. Try again.");
             return false;                      // Return false if the move was not successful

@@ -14,6 +14,9 @@ public class TicTacToe {
     // main method
     public static void main(String[] args) {
         TicTacToe game = new TicTacToe("Bobby", "Pau"); // Create a new TicTacToe object
+        game.singleGameLoop();
+
+        /* TESTING BASIC GAME MECHANICS
         TicTacToeBoard board = new TicTacToeBoard(); // Create a new TicTacToeBoard object
 
         // Print the welcome message
@@ -92,6 +95,7 @@ public class TicTacToe {
         System.out.print(board.toString()); // Print the board again
         game.gameOver = board.isGameOver(); // Check for a winner
         System.out.println(game.gameOver ? "Game over! " + board.checkForWinner() + " has won!" : "No winner yet\n\n"); // Print whether the game is over
+        */
     }
 
     // constructor
@@ -206,21 +210,21 @@ public class TicTacToe {
     
 
     
-    public void singleGameLoop(TicTacToe game) {
-        while (!game.gameOver) {
+    public void singleGameLoop() {
+        while (!this.gameOver) {
             InputCollector input = new InputCollector(); // Create a new InputCollector object
-            String player = player1Turn ? game.player1 : game.player2;
+            String player = player1Turn ? this.player1 : this.player2;
             String playerPrompt = "It's your turn, " + player + ". Which ROW would you like to play?";
             int row;
             int col;
-            game.displayScores(90); // Display the scoreboard
+            this.displayScores(90); // Display the scoreboard
 
             // Display the game board
             System.out.println("\nHere is the board:");
-            System.out.print(game.toString()); // Print the board
+            System.out.print(this.currentBoard.toString()); // Print the board
             row = input.getIntResponse(playerPrompt, 1, 3);
             col = input.getIntResponse("And which COL?", 1, 3);
-            game.currentBoard.makeMove(row, col); // Make the move
+            this.gameOver = this.currentBoard.makeMove(row, col); // Make the move
         }
 
     }
