@@ -1,5 +1,3 @@
-import java.util.HashMap;
-
 public class TicTacToeBoard {
     // instance fields
     private char[][] board;                  // Declare a 3x3 char array to represent the board
@@ -8,7 +6,7 @@ public class TicTacToeBoard {
     private boolean isTie;                   // Declare booleans to keep track of whether the game is over or if there is a tie
     private char winner;                     // Declare a char to keep track of the winner
 
-
+    
     // constructor
     public TicTacToeBoard() {
         board = new char[3][3];              // Initialize the board to be empty
@@ -68,7 +66,7 @@ public class TicTacToeBoard {
             board[row][col] = currentPlayer;   // Update the board
             this.winner = checkForWinner();    // Check for a winner
             currentPlayer = (currentPlayer == 'X') ? 'O' : 'X'; // Switch players
-            return true;                       // Return true if the move was successful
+            return checkForWinner() == ' ' ? false : true;                       // Return true if there is a winner
         } else {
             System.out.println("Cell already occupied. Try again.");
             return false;                      // Return false if the move was not successful
@@ -104,6 +102,10 @@ public class TicTacToeBoard {
 
     public boolean isTie() {
         return isTie;                        // Return whether the game is a tie
+    }
+
+    public char getCurrentPlayer() {
+        return currentPlayer;                // Return the current player
     }
 
 }
