@@ -48,8 +48,17 @@ public class TicTacToeBoard {
         if (board[0][2] != ' ' && board[0][2] == board[1][1] && board[1][1] == board[2][0]) {
             return board[0][2];
         }
-        // No winner
-        return ' ';
+        // check for tie
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[i][j] == ' ') {
+                    return ' ';               // Return empty space if there are unplayed cells
+                }
+            }
+        }
+        this.gameOver = true;        // Set gameOver to true
+        this.isTie = true;          // Set isTie to false
+        return 'T';
     }
 
     public boolean makeMove(int row, int col) {
@@ -91,6 +100,10 @@ public class TicTacToeBoard {
 
     public boolean isGameOver() {
         return gameOver;                      // Return whether the game is over
+    }
+
+    public boolean isTie() {
+        return isTie;                        // Return whether the game is a tie
     }
 
 }
