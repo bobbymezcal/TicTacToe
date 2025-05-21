@@ -4,7 +4,9 @@ public class TicTacToe {
     // Instance fields
     private String player1;                  // Declare a string to represent player 1
     private String player2;                  // Declare a string to represent player 2
-    private boolean gameOver;                // Declare a boolean to keep track of whether the game is over  
+    private boolean gameOver;                // Declare a boolean to keep track of whether the game is over
+    private boolean successfulMove;          // Declare a boolean to keep track of whether the previous move was successful  
+
 
     // Declare a HashMap to keep track of the winners
     private static HashMap<Character, Integer> winnerMap = new HashMap<>(); 
@@ -22,12 +24,53 @@ public class TicTacToe {
         TicTacToeBoard board = new TicTacToeBoard(); // Create a new TicTacToeBoard object
 
         // Print the welcome message
-        System.out.println("Welcome to Tic Tac Toe!");
+        System.out.println("\n\nWelcome to Tic Tac Toe!\n");
         System.out.println("Player X: " + game.player1);
         System.out.println("Player O: " + game.player2);
-        System.out.println("X goes first!");
-        System.out.println("Here is the board:");
+        System.out.println("\nX goes first!");
+        System.out.println("\nHere is the board:");
         System.out.print(board.toString()); // Print the board
+
+        game.successfulMove = board.makeMove(1, 1); // Example move
+        System.out.println("Player X made a move at (1, 1)"+ "\n");
+        System.out.print(board.toString()); // Print the board again
+        game.gameOver = board.isGameOver(); // Check for a winner
+        System.out.println(game.gameOver ? "Game over! " + board.checkForWinner() + " has won!" : "No winner yet\n\n" + //
+                        ""); // Print whether the game is over
+
+        game.successfulMove = board.makeMove(2, 2); // Example move
+        System.out.println("Player X made a move at (2, 2)"+ "\n");
+        System.out.print(board.toString()); // Print the board again
+        game.gameOver = board.isGameOver(); // Check for a winner
+        System.out.println(game.gameOver ? "Game over! " + board.checkForWinner() + " has won!" : "No winner yet\n\n" + //
+                        ""); // Print whether the game is over
+
+        game.successfulMove = board.makeMove(1, 3); // Example move
+        System.out.println("Player X made a move at (2, 2)"+ "\n");
+        System.out.print(board.toString()); // Print the board again
+        game.gameOver = board.isGameOver(); // Check for a winner
+        System.out.println(game.gameOver ? "Game over! " + board.checkForWinner() + " has won!" : "No winner yet\n\n" + //
+                        ""); // Print whether the game is over
+
+        game.successfulMove = board.makeMove(2, 2); // Example move
+        System.out.println("Player X made a move at (2, 2)"+ "\n");
+        System.out.print(board.toString()); // Print the board again
+        game.gameOver = board.isGameOver(); // Check for a winner
+        System.out.println(game.gameOver ? "Game over! " + board.checkForWinner() + " has won!" : "No winner yet\n\n" + //
+                        ""); // Print whether the game is over
+
+        game.successfulMove = board.makeMove(3, 3); // Example move
+        System.out.println("Player X made a move at (2, 2)"+ "\n");
+        System.out.print(board.toString()); // Print the board again
+        game.gameOver = board.isGameOver(); // Check for a winner
+        System.out.println(game.gameOver ? "Game over! " + board.checkForWinner() + " has won!" : "No winner yet\n\n" + //
+                        ""); // Print whether the game is over
+
+        game.successfulMove = board.makeMove(1, 2); // Example move
+        System.out.println("Player X made a move at (2, 2)"+ "\n");
+        System.out.print(board.toString()); // Print the board again
+        game.gameOver = board.isGameOver(); // Check for a winner
+        System.out.println(game.gameOver ? "Game over! " + board.checkForWinner() + " has won!" : "No winner yet\n\n"); // Print whether the game is over
         
     }
 

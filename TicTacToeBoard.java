@@ -53,8 +53,11 @@ public class TicTacToeBoard {
     }
 
     public boolean makeMove(int row, int col) {
+        row--; // Adjust for 0-based index
+        col--; // Adjust for 0-based index
         if (board[row][col] == ' ') {          // Check if the cell is empty
             board[row][col] = currentPlayer;   // Update the board
+            this.winner = checkForWinner();    // Check for a winner
             currentPlayer = (currentPlayer == 'X') ? 'O' : 'X'; // Switch players
             return true;                       // Return true if the move was successful
         } else {
@@ -84,6 +87,10 @@ public class TicTacToeBoard {
             }
         }
         return board;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;                      // Return whether the game is over
     }
 
 }
