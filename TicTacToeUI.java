@@ -14,6 +14,7 @@ public class TicTacToeUI {
         boolean running = true;
 
         while (running) {
+            clearScreen(); // Clear the console
             printBoard(); // Show the board
             
             System.out.println("\nPress a number (1-9) to highlight, 0 to select & exit:");
@@ -57,4 +58,9 @@ public class TicTacToeUI {
             System.out.println();
         }
     }
+
+    public static void clearScreen() {
+    System.out.print("\033[H\033[2J");
+    System.out.flush();
+}
 }
