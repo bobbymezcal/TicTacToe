@@ -1,111 +1,72 @@
+import java.util.Arrays;
+private static final int SIZE = 3;
+
 public class TicTacToeBoard {
     // instance fields
-    private char[][] board;                  // Declare a 3x3 char array to represent the board
-    private char currentPlayer;              // Declare a char to keep track of whose turn it is
-    private boolean gameOver;                // Declare booleans to keep track of whether the game is over or if there is a tie
-    private boolean isTie;                   // Declare booleans to keep track of whether the game is over or if there is a tie
-    private char winner;                     // Declare a char to keep track of the winner
-
+    private char[][] board;                  // Declare char array to represent the board
     
     // constructor
     public TicTacToeBoard() {
-        board = new char[3][3];              // Initialize the board to be empty
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                board[i][j] = ' ';           // Fill the board with empty spaces
-            }
+        board = new char[SIZE][SIZE];
+        for (char[] row : board) {
+            Arrays.fill(row, ' ');
         }
-        currentPlayer = 'X';                 // Set the current player to 'X'
-        gameOver = false;                    // Set gameOver to false
-        isTie = false;                       // Set isTie to false
     }
 
-
-    // instance methods
+    // method to check for a winner or tie
     public char checkForWinner() {
-        // Check rows
-        for (int i = 0; i < 3; i++) {
-            if (board[i][0] != ' ' && board[i][0] == board[i][1] && board[i][1] == board[i][2]) {
-                this.gameOver = true;        // Set gameOver to true
-                this.isTie = false;          // Set isTie to false
-                return board[i][0];          // Return the winner
-            }
-        }
-        // Check columns
-        for (int j = 0; j < 3; j++) {
-            if (board[0][j] != ' ' && board[0][j] == board[1][j] && board[1][j] == board[2][j]) {
-                this.gameOver = true;        // Set gameOver to true
-                this.isTie = false;          // Set isTie to false
-                return board[0][j];
-            }
-        }
-        // Check diagonals
-        if (board[0][0] != ' ' && board[0][0] == board[1][1] && board[1][1] == board[2][2]) {
-            return board[0][0];
-        }
-        if (board[0][2] != ' ' && board[0][2] == board[1][1] && board[1][1] == board[2][0]) {
-            return board[0][2];
-        }
-        // check for tie
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (board[i][j] == ' ') {
-                    return ' ';               // Return empty space if there are unplayed cells
-                }
-            }
-        }
-        this.gameOver = true;        // Set gameOver to true
-        this.isTie = true;          // Set isTie to false
-        return 'T';
-    }
+        char winner = checkRowsCols();         // Check rows and columns for a winner
+        if (winner != ' ') return winner;      // If a winner is found, return it
 
-    public boolean makeMove(int row, int col) {
-        row--; // Adjust for 0-based index
-        col--; // Adjust for 0-based index
-        if (board[row][col] == ' ') {          // Check if the cell is empty
-            board[row][col] = currentPlayer;   // Update the board
-            this.winner = checkForWinner();    // Check for a winner
-            currentPlayer = (currentPlayer == 'X') ? 'O' : 'X'; // Switch players
-            return checkForWinner() == ' ' ? false : true;                       // Return true if there is a winner
-        } else {
-            System.out.println("Cell already occupied. Try again.");
-            return false;                      // Return false if the move was not successful
-        }
+        winner = checkDiagonals();             // Check diagonals for a winner
+        if (winner != ' ') return winner;      // If a winner is found, return it
+
+        return checkForTie();                  // Check for a tie
     }
+    // helper methods to check rows & columns, diagonals, and for a tie
+    private char checkRowsCols() {
+        for (int i = 0; i < SIZE; i++) {
+            if (board[i][0] != ' ' && board[i][0] == board[i][1] && board[i][1] == board[i][2])
+                return board[i][0];  
+            if (board[0][i] != ' ' && board[0][i] == board[1][i] && board[1][i] == board[2][i])
+                return board[0][i];  
+        }
+        return ' ';
+    }
+    private char checkDiagonals() {
+        if (board[0][0] != ' ' && board[0][0] == board[1][1] && board[1][1] == board[2][2])
+            return board[0][0];  
+        if (board[0][2] != ' ' && board[0][2] == board[1][1] && board[1][1] == board[2][0])
+            return board[0][2];  
+        return ' ';
+    }
+    private char checkForTie() {
+        for (char[] row : board) {
+            for (char cell : row) {
+                if (cell == ' ') return ' '; // If an empty cell exists, no tie yet
+            }
+        }
+        return 'T';  // No empty spaces = tie
+    }
+    
+    // method to make a move
+    public char makeMove(int row, int col, char currentPlayer) {
+        row--; col--; // Adjust for 0-based index
+
+        if (row < 0 || row >= SIZE || col < 0 || col >= SIZE) return 'E'; // Invalid index
+        if (board[row][col] != ' ') return 'E';  // Space already occupied
+
+        board[row][col] = currentPlayer;
+        return checkForWinner();
+}
 
     // getter methods
-    public String toString() {
-        String board = "        COL 1 | COL 2 | COL 3\n";
-        board += "------------------------------\n";
-        for (int i = 0; i < 3; i++) {
-            board += "ROW " + (i + 1) + " |";
-            for (int j = 0; j < 3; j++) {
-                board += "   " + this.board[i][j] + "   ";
-                if (j < 2) {
-                    board += "|";
-                } else {
-                    board += "|\n";
-                }
-            }
-            if (i < 2) {
-                board += "------------------------------\n";
-            } else {
-                board += "------------------------------\n";
-            }
-        }
-        return board;
+    public char[][] getBoard() {
+        return board;                          // Return the current state of the board
     }
-
-    public boolean isGameOver() {
-        return gameOver;                      // Return whether the game is over
-    }
-
-    public boolean isTie() {
-        return isTie;                        // Return whether the game is a tie
-    }
-
-    public char getCurrentPlayer() {
-        return currentPlayer;                // Return the current player
-    }
-
+    public char getCell(int row, int col) {
+        row--; col--; // Adjust for 0-based index
+        if (row < 0 || row >= SIZE || col < 0 || col >= SIZE) return 'E'; // Error for invalid index
+        return board[row][col];
+}
 }
