@@ -8,95 +8,17 @@ public class TicTacToe {
     private String startingPlayer;          // Declare a string to represent the starting player
     private boolean gameOver;                // Declare a boolean to keep track of whether the game is over
     private HashMap<String, Integer> winnerMap; // Declare a HashMap to keep track of the scores of the players 
-    private TicTacToeBoard currentBoard; // Declare a TicTacToeBoard object to represent the current board
-
+    private GameBoard currentBoard; // Declare a TicTacToeBoard object to represent the current board
+    private Display<GameBoard> display; // Declare a Display object to represent the display
 
     // main method
     public static void main(String[] args) {
+
         TicTacToe game = new TicTacToe("Bobby", "Pau"); // Create a new TicTacToe object
         game.startingPlayer = game.player1; // Set the starting player
         game.singleGameLoop();
 
-        /* TESTING BASIC GAME MECHANICS
-        TicTacToeBoard board = new TicTacToeBoard(); // Create a new TicTacToeBoard object
 
-        // Print the welcome message
-        System.out.println("\n\nWelcome to Tic Tac Toe!\n");
-
-        game.displayScores(90); // Display the scores
-        System.out.println("\nX goes first!");
-        System.out.println("\nHere is the board:");
-        System.out.print(board.toString()); // Print the board
-        System.out.println(game.winnerMap);
-
-        game.displayScores(90); // Display the scores
-        game.successfulMove = board.makeMove(1, 1); // Example move
-        System.out.println("Player X made a move at (1, 1)"+ "\n");
-        System.out.print(board.toString()); // Print the board again
-        game.gameOver = board.isGameOver(); // Check for a winner
-        System.out.println(game.gameOver ? "Game over! " + board.checkForWinner() + " has won!" : "No winner yet\n\n" + //
-                        ""); // Print whether the game is over
-        
-        game.displayScores(90); // Display the scores
-        game.successfulMove = board.makeMove(2, 2); // Example move
-        System.out.println("Player X made a move at (2, 2)"+ "\n");
-        System.out.print(board.toString()); // Print the board again
-        game.gameOver = board.isGameOver(); // Check for a winner
-        System.out.println(game.gameOver ? "Game over! " + board.checkForWinner() + " has won!" : "No winner yet\n\n" + //
-                        ""); // Print whether the game is over
-
-        game.displayScores(90); // Display the scores
-        game.successfulMove = board.makeMove(1, 3); // Example move
-        System.out.println("Player X made a move at (1, 3)"+ "\n");
-        System.out.print(board.toString()); // Print the board again
-        game.gameOver = board.isGameOver(); // Check for a winner
-        System.out.println(game.gameOver ? "Game over! " + board.checkForWinner() + " has won!" : "No winner yet\n\n" + //
-                        ""); // Print whether the game is over
-
-        game.displayScores(90); // Display the scores
-        game.successfulMove = board.makeMove(1, 2); // Example move
-        System.out.println("Player X made a move at (1, 2)"+ "\n");
-        System.out.print(board.toString()); // Print the board again
-        game.gameOver = board.isGameOver(); // Check for a winner
-        System.out.println(game.gameOver ? "Game over! " + board.checkForWinner() + " has won!" : "No winner yet\n\n" + //
-                        ""); // Print whether the game is over
-
-        game.displayScores(90); // Display the scores
-        game.successfulMove = board.makeMove(3, 2); // Example move
-        System.out.println("Player X made a move at (3, 2)"+ "\n");
-        System.out.print(board.toString()); // Print the board again
-        game.gameOver = board.isGameOver(); // Check for a winner
-        System.out.println(game.gameOver ? "Game over! " + board.checkForWinner() + " has won!" : "No winner yet\n\n" + //
-                        ""); // Print whether the game is over
-
-        game.displayScores(90); // Display the scores
-        game.successfulMove = board.makeMove(2, 1); // Example move
-        System.out.println("Player X made a move at (2, 1)"+ "\n");
-        System.out.print(board.toString()); // Print the board again
-        game.gameOver = board.isGameOver(); // Check for a winner
-        System.out.println(game.gameOver ? "Game over! " + board.checkForWinner() + " has won!" : "No winner yet\n\n"); // Print whether the game is over
-        
-        game.displayScores(90); // Display the scores
-        game.successfulMove = board.makeMove(2, 3); // Example move
-        System.out.println("Player X made a move at (2, 3)"+ "\n");
-        System.out.print(board.toString()); // Print the board again
-        game.gameOver = board.isGameOver(); // Check for a winner
-        System.out.println(game.gameOver ? "Game over! " + board.checkForWinner() + " has won!" : "No winner yet\n\n"); // Print whether the game is over
-
-        game.displayScores(90); // Display the scores
-        game.successfulMove = board.makeMove(3, 3); // Example move
-        System.out.println("Player X made a move at (3, 3)"+ "\n");
-        System.out.print(board.toString()); // Print the board again
-        game.gameOver = board.isGameOver(); // Check for a winner
-        System.out.println(game.gameOver ? "Game over! " + board.checkForWinner() + " has won!" : "No winner yet\n\n"); // Print whether the game is over
-
-        game.displayScores(90); // Display the scores
-        game.successfulMove = board.makeMove(3, 1); // Example move
-        System.out.println("Player X made a move at (3, 1)"+ "\n");
-        System.out.print(board.toString()); // Print the board again
-        game.gameOver = board.isGameOver(); // Check for a winner
-        System.out.println(game.gameOver ? "Game over! " + board.checkForWinner() + " has won!" : "No winner yet\n\n"); // Print whether the game is over
-        */
     }
 
     // constructor
@@ -109,7 +31,7 @@ public class TicTacToe {
         this.winnerMap.put(player1, 0); // Initialize player 1's score to 0
         this.winnerMap.put(player2, 0); // Initialize player 2's score to 0
         this.winnerMap.put("Tie", 0); // Initialize tie score to 0
-        this.currentBoard = new TicTacToeBoard(); // Initialize the current board
+        this.currentBoard = new GameBoard(); // Initialize the current board
     }
 
 
@@ -219,6 +141,7 @@ public class TicTacToe {
             int row;
             int col;
             this.displayScores(90); // Display the scoreboard
+
 
             // Display the game board
             System.out.println("\nHere is the board:");
