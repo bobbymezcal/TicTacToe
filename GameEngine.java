@@ -1,37 +1,48 @@
 import java.util.HashMap;
 
-public class TicTacToe {
+public class GameEngine {
     // Instance fields
-    private String player1;                  // Declare a string to represent player 1
-    private String player2;                  // Declare a string to represent player 2
-    private boolean player1Turn;             // Declare a boolean to keep track of whose turn it is
-    private String startingPlayer;          // Declare a string to represent the starting player
-    private boolean gameOver;                // Declare a boolean to keep track of whether the game is over
-    private HashMap<String, Integer> winnerMap; // Declare a HashMap to keep track of the scores of the players 
-    private GameBoard currentBoard; // Declare a TicTacToeBoard object to represent the current board
-    private Display<GameBoard> display; // Declare a Display object to represent the display
-
-    // main method
-    public static void main(String[] args) {
-
-        TicTacToe game = new TicTacToe("Bobby", "Pau"); // Create a new TicTacToe object
-        game.startingPlayer = game.player1; // Set the starting player
-        game.singleGameLoop();
-
-
-    }
+    private Player playerX, playerO, currentPlayer;                     // Declare Player objects for player X and player O
+    private GameBoard currentBoard;                                     // Declare TicTacToeBoard object to represent current board
+    private boolean gameOver;                                           // Declare boolean to keep track of whether current game is over
+    private GameUI ui;                                                  // Declare GameUI object to handle user interface interactions
 
     // constructor
-    public TicTacToe(String player1, String player2) {
-        this.player1 = player1; // Initialize player 1
-        this.player2 = player2; // Initialize player 2
-        this.gameOver = false;  // Set gameOver to false
-        this.player1Turn = true; // Set player1Turn to true
-        this.winnerMap = new HashMap<>(); // Initialize the winnerMap
-        this.winnerMap.put(player1, 0); // Initialize player 1's score to 0
-        this.winnerMap.put(player2, 0); // Initialize player 2's score to 0
-        this.winnerMap.put("Tie", 0); // Initialize tie score to 0
-        this.currentBoard = new GameBoard(); // Initialize the current board
+    public GameEngine(String player1name, String player2name, int boardSize, GameUI ui) {
+        this.currentBoard = new GameBoard(boardSize);                   // Initialize current board
+        this.ui = ui;                                                   // Set user interface
+        this.playerX = new Player(player1name, 'X');                    // Initialize player 1
+        this.playerO = new Player(player2name, 'O');                    // Initialize player 2
+        this.currentPlayer = this.playerX;                              // Set current player to player X
+        this.gameOver = false;                                          // Set game over to false
+    }
+
+    public void startGame() {
+        while (!gameOver) {
+            ui.displayBoard(currentBoard);
+            int move = ui.getUserMove();
+            makeMove((move - 1) / currentBoard.getSize(), (move - 1) % currentBoard.getSize());
+        }
+    }
+}
+
+
+
+    public boolean makeMove(int row, int col) {
+        if (this.gameOver) return false; // Prevent moves after game ends
+
+        char result = this.currentBoard.makeMove(row, col, this.currentPlayer.getSymbol());
+
+        if (result == 'E') {
+            System.out.println("Invalid move! Try again.");
+            return false;
+        } else if (result == 'T' || result == 'X' || result == 'O') {
+            this.gameOver = true;
+            System.out.println("Game Over! " + (result == 'T' ? "It's a tie!" : this.currentPlayer.getName() + " wins!"));
+        } else {
+            this.currentPlayer = (this.currentPlayer == this.playerX) ? this.playerO : this.playerX; // Switch turns
+        }
+        return true;
     }
 
 
@@ -132,28 +143,5 @@ public class TicTacToe {
     }
     
 
-    
-    public void singleGameLoop() {
-        while (!this.gameOver) {
-            InputCollector input = new InputCollector(); // Create a new InputCollector object
-            String player = player1Turn ? this.player1 : this.player2;
-            String playerPrompt = "It's your turn, " + player + ". Which ROW would you like to play?";
-            int row;
-            int col;
-            this.displayScores(90); // Display the scoreboard
-
-
-            // Display the game board
-            System.out.println("\nHere is the board:");
-            System.out.print(this.currentBoard.toString()); // Print the board
-            row = input.getIntResponse(playerPrompt, 1, 3);
-            col = input.getIntResponse("And which COL?", 1, 3);
-            this.gameOver = this.currentBoard.makeMove(row, col);
-            this.player1Turn = !this.player1Turn; // Make the move
-        }
-        System.out.println("\nHere is the board:");
-        System.out.print(this.currentBoard.toString()); // Print the board
-        this.startingPlayer = this.startingPlayer == player2 ? this.player1 : this.player2; // Set the new starting player
-    }
 
 }
