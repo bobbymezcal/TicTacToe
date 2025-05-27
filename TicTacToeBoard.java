@@ -87,7 +87,7 @@ public class TicTacToeBoard {
     public char makeMove(int row, int col, char currentPlayer) {
         row--; col--; // Adjust for 0-based index
 
-        if (row < 0 || row >= SIZE || col < 0 || col >= SIZE) return 'E'; // Invalid index
+        if (row < 0 || row >= this.size || col < 0 || col >= this.size) return 'E'; // Invalid index
         if (board[row][col] != ' ') return 'E';  // Space already occupied
 
         board[row][col] = currentPlayer;
@@ -100,7 +100,7 @@ public class TicTacToeBoard {
     }
     public char getCell(int row, int col) {
         row--; col--; // Adjust for 0-based index
-        if (row < 0 || row >= SIZE || col < 0 || col >= SIZE) return 'E'; // Error for invalid index
+        if (row < 0 || row >= this.size || col < 0 || col >= this.size) return 'E'; // Error for invalid index
         return board[row][col];
 }
 }
