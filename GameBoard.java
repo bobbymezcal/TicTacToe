@@ -1,12 +1,12 @@
 import java.util.Arrays;
 
-public class TicTacToeBoard {
+public class GameBoard {
     // instance fields
     private char[][] board;                                             // Declare char array to represent board
     private int size;                                                   // Size of the board 
 
     // constructor
-    public TicTacToeBoard(int size) {
+    public GameBoard(int size) {
         this.size = size;                                               // Initialize size
         if (size < 3 || size > 10) {                                   // Validate size
             throw new IllegalArgumentException("Size must be between 3 and 10.");
