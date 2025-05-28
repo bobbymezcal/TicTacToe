@@ -2,9 +2,9 @@ import java.util.Scanner;
 
 public class ConsoleUI implements GameUI {
     private Scanner scanner;
-    private GameEngine game;
+    private GameRound game;
 
-    public ConsoleUI(GameEngine game) {
+    public ConsoleUI(GameRound game) {
         this.game = game;
         this.scanner = new Scanner(System.in);
     }
@@ -54,15 +54,14 @@ public class ConsoleUI implements GameUI {
 
     public void startGame() {
         while (!game.isGameOver()) {
-            displayBoard((GameBoard) this.game.getCurrentBoard());  // Now correctly passing the current board
+            displayBoard((GameBoard) this.game.getCurrentBoard());  
             System.out.println(game.getGameState());
 
             int[] move = getUserMove();
-            if (!game.makeMove(move)) { // Now correctly passing the move array
+            if (game.makeMove(move) == 'E') { 
                 System.out.println("Invalid move! Try again.");
             }
         }
-
         displayGameResult();
     }
 
@@ -83,6 +82,10 @@ public class ConsoleUI implements GameUI {
         } catch (Exception e) {
             System.out.println("\n".repeat(50)); // Fallback method
         }
+    }
+
+    public void setGameRound(GameRound game) {
+        this.game = game;  // Set the current game round
     }
 
 }
