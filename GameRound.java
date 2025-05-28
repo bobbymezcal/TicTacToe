@@ -1,4 +1,4 @@
-public class GameEngine {
+public class GameRound {
     // Instance fields
     private Player playerX, playerO, currentPlayer;                     // Declare Player objects for player X and player O
     private GameBoard currentBoard;                                     // Declare TicTacToeBoard object to represent current board
@@ -6,7 +6,7 @@ public class GameEngine {
     private GameUI ui;                                                  // Declare GameUI object to handle user interface interactions
 
     // constructor
-    public GameEngine(String player1name, String player2name, int boardSize) {
+    public GameRound(String player1name, String player2name, int boardSize) {
         this.currentBoard = new GameBoard(boardSize);                   // Initialize current board
         this.playerX = new Player(player1name, 'X', true);                    // Initialize player 1
         this.playerO = new Player(player2name, 'O', false);                    // Initialize player 2
@@ -18,37 +18,33 @@ public class GameEngine {
         this.ui = ui;                                                   // Set the user interface
     }
 
-    public void startGame() {
+    public char startGame() {
+        char result = ' '; // Initialize result to empty character
         while (!gameOver) {
             ui.displayBoard(currentBoard);
             int[] move = ui.getUserMove();
-            makeMove(move);  // Handles checking for winner and updating gameOver internally
+            result = makeMove(move);  // Handles checking for winner and updating gameOver internally
         }
         System.out.println(getWinnerMessage()); // Game over message after exiting loop
+        return result;
     }
 
     private void switchTurn() {
         this.currentPlayer = (this.currentPlayer == this.playerX) ? this.playerO : this.playerX; // Switch turn
     }
 
-    public boolean makeMove(int[] move) {
-        int row = move[0];
-        int col = move[1];
-
-        char result = currentBoard.makeMove(row, col, currentPlayer.getSymbol());
-
-        if (result == 'E') {
-            System.out.println("Invalid move! Try again.");
-            return false;
-        } else if (result == 'T' || result == 'X' || result == 'O') {
-            gameOver = true;
-            System.out.println(getWinnerMessage());
-            return true;
+    public char makeMove(int[] move) {
+        char result = currentBoard.makeMove(move[0], move[1], currentPlayer.getSymbol());
+        if (result == 'X' || result == 'O' || result == 'T') {
+            if (currentBoard.checkForWinner() != ' ') {
+                gameOver = true; // Set game over if there's a winner
+                return result; // Return the result of the move
+            } else if (result == ' '){
+                switchTurn(); // Switch to the next player
+                return result;
+            }   
         }
-
-        // If no winner or tie, switch turns
-        switchTurn();
-        return true;
+        return result; // Return empty character for invalid move
     }
 
     public boolean isGameOver() {
