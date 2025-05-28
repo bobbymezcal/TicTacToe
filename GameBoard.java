@@ -102,5 +102,8 @@ public class GameBoard {
         row--; col--; // Adjust for 0-based index
         if (row < 0 || row >= this.size || col < 0 || col >= this.size) return 'E'; // Error for invalid index
         return board[row][col];
-}
+    }
+    public int getSize() {
+        return size;                           // Return the size of the board
+    }
 }
