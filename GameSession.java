@@ -22,11 +22,14 @@ public class GameSession {
     }
 
     public void startSession() {
+        ConsoleUI ui = new ConsoleUI(null);
         boolean continuePlaying = true;
 
         while (continuePlaying) {
             GameRound game = new GameRound(player1.getName(), player2.getName(), 3);
-            char result = game.startGame();
+            game.setUI(ui);
+            ui.setGameRound(game);
+            char result = game.playGame();
 
             // Track results
             if (result == 'X') winsP1++;

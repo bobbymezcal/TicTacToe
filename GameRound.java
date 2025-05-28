@@ -18,7 +18,7 @@ public class GameRound {
         this.ui = ui;                                                   // Set the user interface
     }
 
-    public char startGame() {
+    public char playGame() {
         char result = ' '; // Initialize result to empty character
         while (!gameOver) {
             ui.displayBoard(currentBoard);
@@ -33,19 +33,24 @@ public class GameRound {
         this.currentPlayer = (this.currentPlayer == this.playerX) ? this.playerO : this.playerX; // Switch turn
     }
 
+
+
     public char makeMove(int[] move) {
         char result = currentBoard.makeMove(move[0], move[1], currentPlayer.getSymbol());
-        if (result == 'X' || result == 'O' || result == 'T') {
-            if (currentBoard.checkForWinner() != ' ') {
-                gameOver = true; // Set game over if there's a winner
-                return result; // Return the result of the move
-            } else if (result == ' '){
-                switchTurn(); // Switch to the next player
-                return result;
-            }   
+        if (result == 'E') {
+            System.out.println("Invalid move! Try again.");
+            return result;
         }
-        return result; // Return empty character for invalid move
+
+        if (result == 'X' || result == 'O' || result == 'T') {
+            gameOver = true;  // End game if a winner or tie is detected
+        } else {
+            switchTurn();  // Only switch turns if the game isn't over
+        }
+
+        return result;
     }
+
 
     public boolean isGameOver() {
         return this.gameOver; // Return whether the game is over
@@ -60,13 +65,13 @@ public class GameRound {
         return this.currentBoard.getBoard(); // Return the current state of the board
     }
     public String getWinnerMessage() {
-        if (this.gameOver) {
-            char winner = this.currentBoard.checkForWinner();
-            if (winner == 'T') return "It's a tie!";
-            return this.currentPlayer.getName() + " wins!";
-        }
+        char winner = currentBoard.checkForWinner();
+        if (winner == 'T') return "It's a tie!";
+        if (winner != ' ') return currentPlayer.getName() + " wins!";
         return "Game is still ongoing.";
     }
+
+
     public GameBoard getCurrentBoard() {
         return this.currentBoard; // Return the current board
     }

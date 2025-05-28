@@ -84,6 +84,10 @@ public class ConsoleUI implements GameUI {
         }
     }
 
+    public void setGameRound(GameRound game) {
+        this.game = game;  // Set the current game round
+    }
+
 }
 
 
