@@ -1,8 +1,8 @@
 public interface GameUI {
     void displayBoard(GameBoard board, Scoreboard scoreboard);
-    int[] getUserMove();
+    int[] getUserMove(Player currentPlayer);
     String getUserInput(String prompt);
     void displayMessage(String message);
-    void setGameRound(GameRound game);
-    void setGameRound(GameSession session);
+    void setMatch(Match game);
+    void setMatch(Session session);
 }

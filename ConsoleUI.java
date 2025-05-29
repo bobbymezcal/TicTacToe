@@ -3,8 +3,7 @@ import java.util.Scanner;
 public class ConsoleUI implements GameUI {
     // INSTANCE FIELDS
     private Scanner scanner;                                                            // Scanner for user input
-    private Scoreboard scoreboard;                                                      // Scoreboard to keep track of players and scores
-    private GameRound game;                                                             // GameRound to manage current game state
+    private Match match;                                                             // GameRound to manage current game state
 
     // CONSTRUCTOR 
     public ConsoleUI() {
@@ -15,7 +14,6 @@ public class ConsoleUI implements GameUI {
     @Override
     public void displayBoard(GameBoard board, Scoreboard scoreboard) {                  // display current game board and scoreboard
         clearScreen();                                                                  // clear console screen for fresh display
-        System.out.println("Scoreboard:");                                            // print scoreboard header
         System.out.print(scoreboard.toString());                                        // print scoreboard using its toString method       
         System.out.println("Current Board:");                                         // print current board header
         char[][] boardState = board.getBoard();                                         // get current state of  board
@@ -29,9 +27,10 @@ public class ConsoleUI implements GameUI {
 
     // GET USER MOVE (must return valid moves only)
     @Override
-    public int[] getUserMove() {                                                       
+    public int[] getUserMove(Player currentPlayer) {                                                       
         int row, col;                                                                   // variables to store user input for row and column
         while (true) {                                                                  // infinite loop to keep asking for valid input
+            System.out.println("It's " + currentPlayer.getName() + "'s turn.");
             System.out.print("Enter row and column (e.g., '1 2') or 0 to exit: ");    // prompt user for input
             if (scanner.hasNextInt()) {                                                 // check if first input is integer
                 row = scanner.nextInt();                                                // read row input
@@ -42,8 +41,8 @@ public class ConsoleUI implements GameUI {
                 if (scanner.hasNextInt()) {                                             // check if second input is integer                 
                     col = scanner.nextInt();                                            // read column input
                     scanner.nextLine();                                                 // clear buffer
-                    if (row >= 1 && row <= game.getBoardSize() &&                       // check if row is within valid range
-                    col >= 1 && col <= game.getBoardSize()) {                           // check if column is within valid range
+                    if (row >= 1 && row <= match.getBoardSize() &&                       // check if row is within valid range
+                    col >= 1 && col <= match.getBoardSize()) {                           // check if column is within valid range
                         return new int[]{row, col};                                     // return valid move as int array    
                     } else {
                         System.out.println("Invalid move. Enter numbers within board size.");   // print error message
@@ -72,11 +71,6 @@ public class ConsoleUI implements GameUI {
         System.out.println(message);                                                    // print string to console
     }
 
-    // DISPLAY GAME RESULT
-    private void displayGameResult() {
-        System.out.println("Game Over! " + game.getWinnerMessage());
-    }
-
     // CLEAR CONSOLE SCREEN
     private static void clearScreen() {
         String os = System.getProperty("os.name").toLowerCase();
@@ -95,13 +89,13 @@ public class ConsoleUI implements GameUI {
 
     // SET GAME ROUND (GameRound as parameter)
     @Override
-    public void setGameRound(GameRound game) {
-        this.game = game;                                                               // set current game round
+    public void setMatch(Match match) {
+        this.match = match;                                                               // set current game round
     }
 
     // SET GAME ROUND (GameSession as parameter)
     @Override
-    public void setGameRound(GameSession gameSession) {
-        this.game = gameSession.getCurrentGame();                                       // set current game round
+    public void setMatch(Session gameSession) {
+        this.match = gameSession.getCurrentMatch();                                       // set current game round
     }
 }

@@ -1,4 +1,4 @@
-public class GameRound {
+public class Match {
     // INSTANCE VARIABLES
     private GameUI ui;                                                  // declare GameUI object to handle user interface interactions
     private Scoreboard scoreboard;                                      // declare Scoreboard object to keep track of players and scores
@@ -6,7 +6,7 @@ public class GameRound {
     private boolean gameOver;                                           // declare boolean to keep track of whether current game is over
     
     // CONSTRUCTOR to initialize GameRound with Scoreboard and board size
-    public GameRound(Scoreboard scoreboard, int boardSize) {            
+    public Match(Scoreboard scoreboard, int boardSize) {            
         this.board = new GameBoard(boardSize);                          // initialize current board
         this.scoreboard = scoreboard;                                   // set scoreboard
         this.gameOver = false;                                          // set game over to false
@@ -17,16 +17,20 @@ public class GameRound {
         this.ui = ui;                                                   // set user interface
     }
 
-    // SINGLE GAME LOOP METHOD
-    public char playGame() {                                            
-        char result = ' ';                                              // Initialize result to empty character
-        while (!gameOver) {                                             // loop until game is over                     
-            ui.displayBoard(board, scoreboard);                         // display current board and scoreboard
-            int[] move = ui.getUserMove();                              // get user input for move (method only returns valid moves)
-            result = makeMove(move);                                    // call makeMove (which checks for winner, updates gameOver, and switches turns)
+    // MATCH LOOP
+    public char matchLoop() {
+        char matchResult = ' ';
+        while (matchResult == ' ') {
+            matchResult = singleTurn();
         }
-        ui.displayMessage(getWinnerMessage());                          // display game over message after exiting loop
-        return result;                                                  // return result of the game ('X', 'O', or 'T')
+        return matchResult;
+    }
+
+    // SINGLE TURN
+    public char singleTurn() {                                            
+        ui.displayBoard(board, scoreboard);                             // display current board and scoreboard
+        int[] move = ui.getUserMove(scoreboard.getSelectedPlayer());    // get user input for move (method only returns valid moves)
+        return makeMove(move);                                          // call makeMove (which checks for winner, updates gameOver, and switches turns)
     }
 
     // METHOD TO MAKE MOVE (move *must* be validated by UI before calling this method)
@@ -43,8 +47,9 @@ public class GameRound {
     }
     
     // HELPER METHOD TO SWITCH TURNS BETWEEN PLAYERS (after a valid move only)
-    private void switchTurn() {                                             
-        scoreboard.switchSelectedPlayer();                              // Switch the selected player in the scoreboard
+    private void switchTurn() {    
+        System.out.println("SWITCHING SELCTED PLAYER NOW");                                         
+        scoreboard.switchTurns();                              // Switch the selected player in the scoreboard
     }
 
     public boolean isGameOver() {

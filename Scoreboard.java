@@ -1,22 +1,31 @@
 public class Scoreboard {
+    // INSTANCE VARIABLES
     private Player player1, player2, selectedPlayer;
+    private int moveCounter = 0;        // for debugging
+    private int gameCounter = 0;        // for debugging
     
+    // CONSTRUCTOR
     public Scoreboard(Player player1, Player player2, Player selectedPlayer) {
         this.player1 = player1;
         this.player2 = player2;
         this.selectedPlayer = selectedPlayer;         
     }
     
-    public void switchSelectedPlayer() {
+    // METHOD TO SWITCH TURNS - called after each turn in a game
+    public void switchTurns() {
         if (selectedPlayer.equals(player1)) {
             selectedPlayer = player2; 
         } else {
             selectedPlayer = player1; 
         }
+        this.moveCounter++;
     }
-    public void switchXOPlayers() {
+    
+    // METHOD TO SWITCH SIDES - called at the beginning of each new game
+    public void switchSides() {
         player1.setSymbol(player1.getSymbol() == 'X' ? 'O' : 'X');
         player2.setSymbol(player2.getSymbol() == 'X' ? 'O' : 'X');
+        this.gameCounter++;
     }
 
     // getter methods
@@ -61,7 +70,7 @@ public class Scoreboard {
     }
     @Override
     public String toString() {
-        return String.format("Scoreboard:\n%s: %d wins\n%s: %d wins\nTies: %d",
-                player1.getName(), player1.getWins(), player2.getName(), player2.getWins(), player1.getTies());
+        return String.format("Scoreboard:\n%s - %c: %d wins\n%s - %c: %d wins\nTies: %d\nTotal Moves:%d\nTotal Games:%d\n\n",
+                player1.getName(), player1.getSymbol(), player1.getWins(), player2.getName(), player2.getSymbol(), player2.getWins(), player1.getTies(), moveCounter, gameCounter);
     }
 }
