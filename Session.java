@@ -1,5 +1,5 @@
 public class Session {
-    // INSTANCE VARIABLES
+    // INSTANCE FIELDS
     private GameUI ui;                                                      // UI for game session
     private Match match;                                                    // current game round being played    
     private Scoreboard scoreboard;                                          // scoreboard to keep track of player scores
@@ -38,6 +38,7 @@ public class Session {
         return match.matchLoop();
     }
 
+    // UPDATE SCOREBOARD
     private void updateScoreboard(char result) {
         Player playerX = scoreboard.getPlayerX();
         Player playerO = scoreboard.getPlayerO();

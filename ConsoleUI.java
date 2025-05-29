@@ -3,16 +3,18 @@ import java.util.Scanner;
 public class ConsoleUI implements GameUI {
     // INSTANCE FIELDS
     private Scanner scanner;                                                            // Scanner for user input
-    private Match match;                                                             // GameRound to manage current game state
+    private Match match;                                                                // Match to manage current game state
+    private GameBoard board;
 
     // CONSTRUCTOR 
     public ConsoleUI() {
-        this.scanner = new Scanner(System.in);                                          // initialize ConsoleUI with Scanner for user input
+        this.scanner = new Scanner(System.in);                                          // initialize ConsoleUI with Scanner
     }
 
     // DISPLAY BOARD AND SCOREBOARD
     @Override
     public void displayBoard(GameBoard board, Scoreboard scoreboard) {                  // display current game board and scoreboard
+        this.board = board;
         clearScreen();                                                                  // clear console screen for fresh display
         System.out.print(scoreboard.toString());                                        // print scoreboard using its toString method       
         System.out.println("Current Board:");                                         // print current board header
@@ -41,9 +43,13 @@ public class ConsoleUI implements GameUI {
                 if (scanner.hasNextInt()) {                                             // check if second input is integer                 
                     col = scanner.nextInt();                                            // read column input
                     scanner.nextLine();                                                 // clear buffer
-                    if (row >= 1 && row <= match.getBoardSize() &&                       // check if row is within valid range
-                    col >= 1 && col <= match.getBoardSize()) {                           // check if column is within valid range
-                        return new int[]{row, col};                                     // return valid move as int array    
+                    if (row >= 1 && row <= match.getBoardSize() &&                      // check if row is within valid range
+                    col >= 1 && col <= match.getBoardSize()) {                          // check if column is within valid range
+                        if (this.board.getCell(row, col) == ' ') {                      // check if space is open
+                            return new int[]{row, col};                                 // return valid move as int array    
+                        } else {
+                            System.out.println("That space is already taken. Choose an open space."); // print error message
+                        }
                     } else {
                         System.out.println("Invalid move. Enter numbers within board size.");   // print error message
                     }
@@ -87,13 +93,13 @@ public class ConsoleUI implements GameUI {
         }
     }
 
-    // SET GAME ROUND (GameRound as parameter)
+    // SET GAME ROUND (Match as parameter)
     @Override
     public void setMatch(Match match) {
         this.match = match;                                                               // set current game round
     }
 
-    // SET GAME ROUND (GameSession as parameter)
+    // SET GAME ROUND (Session as parameter)
     @Override
     public void setMatch(Session gameSession) {
         this.match = gameSession.getCurrentMatch();                                       // set current game round

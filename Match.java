@@ -1,5 +1,5 @@
 public class Match {
-    // INSTANCE VARIABLES
+    // INSTANCE FIELDS
     private GameUI ui;                                                  // declare GameUI object to handle user interface interactions
     private Scoreboard scoreboard;                                      // declare Scoreboard object to keep track of players and scores
     private GameBoard board;                                            // declare TicTacToeBoard object to represent current board
@@ -12,7 +12,7 @@ public class Match {
         this.gameOver = false;                                          // set game over to false
     }
 
-    // SETTER METHOD TO SET UI
+    // METHOD TO SET UI
     public void setUI(GameUI ui) {                                      
         this.ui = ui;                                                   // set user interface
     }
@@ -52,6 +52,7 @@ public class Match {
         scoreboard.switchTurns();                              // Switch the selected player in the scoreboard
     }
 
+    // getter methods
     public boolean isGameOver() {
         return this.gameOver; // Return whether the game is over
     }
