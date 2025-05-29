@@ -1,78 +1,69 @@
 public class GameRound {
-    // Instance fields
-    private Player playerX, playerO, currentPlayer;                     // Declare Player objects for player X and player O
-    private GameBoard currentBoard;                                     // Declare TicTacToeBoard object to represent current board
-    private boolean gameOver;                                           // Declare boolean to keep track of whether current game is over
-    private GameUI ui;                                                  // Declare GameUI object to handle user interface interactions
-
-    // constructor
-    public GameRound(String player1name, String player2name, int boardSize) {
-        this.currentBoard = new GameBoard(boardSize);                   // Initialize current board
-        this.playerX = new Player(player1name, 'X', true);                    // Initialize player 1
-        this.playerO = new Player(player2name, 'O', false);                    // Initialize player 2
-        this.currentPlayer = this.playerX;                              // Set current player to player X
-        this.gameOver = false;                                          // Set game over to false
+    // INSTANCE VARIABLES
+    private GameUI ui;                                                  // declare GameUI object to handle user interface interactions
+    private Scoreboard scoreboard;                                      // declare Scoreboard object to keep track of players and scores
+    private GameBoard board;                                            // declare TicTacToeBoard object to represent current board
+    private boolean gameOver;                                           // declare boolean to keep track of whether current game is over
+    
+    // CONSTRUCTOR to initialize GameRound with Scoreboard and board size
+    public GameRound(Scoreboard scoreboard, int boardSize) {            
+        this.board = new GameBoard(boardSize);                          // initialize current board
+        this.scoreboard = scoreboard;                                   // set scoreboard
+        this.gameOver = false;                                          // set game over to false
     }
 
-    public void setUI(GameUI ui) {
-        this.ui = ui;                                                   // Set the user interface
+    // SETTER METHOD TO SET UI
+    public void setUI(GameUI ui) {                                      
+        this.ui = ui;                                                   // set user interface
     }
 
-    public char playGame() {
-        char result = ' '; // Initialize result to empty character
-        while (!gameOver) {
-            ui.displayBoard(currentBoard);
-            int[] move = ui.getUserMove();
-            result = makeMove(move);  // Handles checking for winner and updating gameOver internally
+    // SINGLE GAME LOOP METHOD
+    public char playGame() {                                            
+        char result = ' ';                                              // Initialize result to empty character
+        while (!gameOver) {                                             // loop until game is over                     
+            ui.displayBoard(board, scoreboard);                         // display current board and scoreboard
+            int[] move = ui.getUserMove();                              // get user input for move (method only returns valid moves)
+            result = makeMove(move);                                    // call makeMove (which checks for winner, updates gameOver, and switches turns)
         }
-        System.out.println(getWinnerMessage()); // Game over message after exiting loop
-        return result;
+        ui.displayMessage(getWinnerMessage());                          // display game over message after exiting loop
+        return result;                                                  // return result of the game ('X', 'O', or 'T')
     }
 
-    private void switchTurn() {
-        this.currentPlayer = (this.currentPlayer == this.playerX) ? this.playerO : this.playerX; // Switch turn
-    }
-
-
-
-    public char makeMove(int[] move) {
-        char result = currentBoard.makeMove(move[0], move[1], currentPlayer.getSymbol());
-        if (result == 'E') {
-            System.out.println("Invalid move! Try again.");
-            return result;
-        }
-
-        if (result == 'X' || result == 'O' || result == 'T') {
-            gameOver = true;  // End game if a winner or tie is detected
+    // METHOD TO MAKE MOVE (move *must* be validated by UI before calling this method)
+    public char makeMove(int[] move) {                                  
+        Player currentPlayer = scoreboard.getSelectedPlayer();           // get current player from scoreboard
+        char activeSymbol  = currentPlayer.getSymbol();                 // get current player's symbol
+        char result = board.makeMove(move[0], move[1], activeSymbol);   // make move on the board with the current player's symbol
+        if (result == 'X' || result == 'O' || result == 'T') {          // check if the move resulted in win or tie
+            gameOver = true;                                            // end game if a winner or tie is detected
         } else {
-            switchTurn();  // Only switch turns if the game isn't over
+            switchTurn();                                               // switch turns if the game isn't over
         }
-
-        return result;
+        return result;                                                  // return the result of the move
     }
-
+    
+    // HELPER METHOD TO SWITCH TURNS BETWEEN PLAYERS (after a valid move only)
+    private void switchTurn() {                                             
+        scoreboard.switchSelectedPlayer();                              // Switch the selected player in the scoreboard
+    }
 
     public boolean isGameOver() {
         return this.gameOver; // Return whether the game is over
     }
-    public String getGameState() {
-        return "Current Player: " + this.currentPlayer.getName() + " (" + this.currentPlayer.getSymbol() + ")";
-    }
     public int getBoardSize() {
-        return this.currentBoard.getSize(); // Return the size of the board
+        return this.board.getSize(); // Return the size of the board
     }
     public char[][] getBoardState() {
-        return this.currentBoard.getBoard(); // Return the current state of the board
+        return this.board.getBoard(); // Return the current state of the board
     }
     public String getWinnerMessage() {
-        char winner = currentBoard.checkForWinner();
+        char winner = board.checkForWinner();
         if (winner == 'T') return "It's a tie!";
-        if (winner != ' ') return currentPlayer.getName() + " wins!";
+        if (winner != 'X') return scoreboard.getPlayerX().getName() + " wins!";
+        if (winner != 'O') return scoreboard.getPlayerO().getName() + " wins!";
         return "Game is still ongoing.";
     }
-
-
     public GameBoard getCurrentBoard() {
-        return this.currentBoard; // Return the current board
+        return this.board; // Return the current board
     }
 }
