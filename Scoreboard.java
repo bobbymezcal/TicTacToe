@@ -26,6 +26,7 @@ public class Scoreboard {
         player1.setSymbol(player1.getSymbol() == 'X' ? 'O' : 'X');
         player2.setSymbol(player2.getSymbol() == 'X' ? 'O' : 'X');
         selectedPlayer = player1.getSymbol() == 'X' ? player1 : player2;
+        moveCounter++;
         gameCounter++;
     }
 
