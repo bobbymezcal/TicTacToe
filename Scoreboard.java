@@ -1,5 +1,5 @@
 public class Scoreboard {
-    // INSTANCE VARIABLES
+    // INSTANCE FIELDS
     private Player player1, player2, selectedPlayer;
     private int moveCounter = 0;        // for debugging
     private int gameCounter = 0;        // for debugging

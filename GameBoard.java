@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
 public class GameBoard {
-    // instance fields
+    // INSTANCE FIELDS
     private char[][] board;                                             // Declare char array to represent board
     private int size;                                                   // Size of the board 
 
