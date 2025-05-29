@@ -2,28 +2,29 @@ public class Player {
     private String name;
     private char symbol;
     private int wins, losses, ties;
-    private boolean isTurn;
 
-    public Player(String name, char symbol, boolean isFirst) {
+    public Player(String name, char symbol) {
         this.name = name;
         this.symbol = symbol;
         this.wins = 0;
         this.losses = 0;
         this.ties = 0;
-        this.isTurn = isFirst;
     }
 
+    // getter methods
     public String getName() { return name; }
     public char getSymbol() { return symbol; }
     public int getWins() { return wins; }
     public int getLosses() { return losses; }
     public int getTies() { return ties; }
-    public boolean isTurn() { return isTurn; }
 
+    // setter methods
     public void addWin() { wins++; }
     public void addLoss() { losses++; }
     public void addTie() { ties++; }
-    public void setTurn(boolean turn) { isTurn = turn; }
+    public void setSymbol(char symbol) {
+        this.symbol = symbol;
+    }
 
     @Override
     public String toString() {
